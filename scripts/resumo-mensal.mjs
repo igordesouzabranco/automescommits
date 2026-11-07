@@ -1,11 +1,16 @@
+/* global process */
+
 // Resumo mensal do GitHub -> webhook do Make -> post no LinkedIn
 // Roda com Node 20+ (usa fetch nativo, sem dependências).
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 
 const USER = process.env.GITHUB_USER || "igordesouzabranco";
 const TOKEN = process.env.GITHUB_TOKEN;
 const WEBHOOK = process.env.MAKE_WEBHOOK_URL;
+// Definidos automaticamente pelo GitHub Actions
+const REPO = process.env.GITHUB_REPOSITORY; // ex.: igordesouzabranco/automescommits
+const BRANCH = process.env.GITHUB_REF_NAME || "main";
 const APRENDIZADO = (process.env.APRENDIZADO || "").trim();
 const DRY_RUN = process.env.DRY_RUN === "true" || !WEBHOOK;
 
@@ -60,6 +65,23 @@ function salvarJson(dados) {
     ) + "\n"
   );
   console.log(`Resumo salvo em ${arquivo}`);
+}
+
+// Sorteia uma imagem da pasta imagens/cobras do repositório.
+// Se a pasta não existir ou estiver vazia, o post sai só com texto.
+function sortearCobra() {
+  const pasta = "imagens/cobras";
+  if (!REPO || !existsSync(pasta)) return null;
+
+  const arquivos = readdirSync(pasta).filter((f) => /\.(png|jpe?g)$/i.test(f));
+  if (arquivos.length === 0) return null;
+
+  const arquivo = arquivos[Math.floor(Math.random() * arquivos.length)];
+  return {
+    arquivo,
+    // Link direto do arquivo no GitHub (funciona em repositório público)
+    url: `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${pasta}/${encodeURIComponent(arquivo)}`,
+  };
 }
 
 async function main() {
@@ -129,12 +151,17 @@ async function main() {
   const texto = linhas.join("\n");
   console.log(texto);
 
+  const imagem = sortearCobra();
+  if (imagem) console.log(`\n🐍 Imagem sorteada: ${imagem.url}`);
+  else console.log("\nNenhuma imagem em imagens/cobras: post só com texto.");
+
   salvarJson({
     atividade: true,
     projetos: ativos,
     stacks,
     total_commits: totalCommits,
     texto,
+    imagem,
   });
 
   if (DRY_RUN) {
@@ -145,7 +172,12 @@ async function main() {
   const res = await fetch(WEBHOOK, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ tipo: "resumo-mensal", mes: nomeMes, texto }),
+    body: JSON.stringify({
+      tipo: "resumo-mensal",
+      mes: nomeMes,
+      texto,
+      imagem_url: imagem?.url ?? "",
+    }),
   });
   if (!res.ok) throw new Error(`Make respondeu ${res.status}`);
   console.log("\nEnviado ao Make com sucesso.");
