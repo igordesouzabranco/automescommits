@@ -1,0 +1,60 @@
+{
+  "mes": "outubro",
+  "gerado_em": "2026-11-07T17:27:13.559Z",
+  "atividade": true,
+  "projetos": [
+    {
+      "nome": "projetoreact",
+      "commits": 8,
+      "novo": true
+    },
+    {
+      "nome": "snakit-cli",
+      "commits": 66,
+      "novo": true
+    },
+    {
+      "nome": "collegium-api",
+      "commits": 2,
+      "novo": false
+    },
+    {
+      "nome": "igor-portfolio",
+      "commits": 5,
+      "novo": true
+    },
+    {
+      "nome": "xp-portfolio",
+      "commits": 5,
+      "novo": true
+    },
+    {
+      "nome": "appreact",
+      "commits": 3,
+      "novo": true
+    },
+    {
+      "nome": "origo-api",
+      "commits": 2,
+      "novo": false
+    },
+    {
+      "nome": "igordesouzabranco",
+      "commits": 4,
+      "novo": false
+    },
+    {
+      "nome": "payments-analytics",
+      "commits": 5,
+      "novo": true
+    }
+  ],
+  "stacks": [
+    "JavaScript",
+    "CSS",
+    "HTML",
+    "Java"
+  ],
+  "total_commits": 100,
+  "texto": "Resumo de outubro 🚀\n\n📦 Projetos novos: projetoreact, snakit-cli, igor-portfolio, xp-portfolio, appreact, payments-analytics\n🔧 Mais ativos: snakit-cli (66 commits), projetoreact (8 commits), igor-portfolio (5 commits)\n🧰 Stacks do mês: JavaScript, CSS, HTML, Java\n📈 Total: 100 commits\n\ngithub.com/igordesouzabranco"
+}
