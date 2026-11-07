@@ -42,4 +42,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/resumos
-          git diff --cached --quiet || (git commit -m "chore: resumo mensal" && git push)
+          if git diff --cached --quiet; then
+            echo "Nada para commitar."
+            exit 0
+          fi
+          git commit -m "chore: resumo mensal"
+          git pull --rebase -X theirs
+          git push
