@@ -1,6 +1,6 @@
 {
   "mes": "outubro",
-  "gerado_em": "2026-11-07T17:58:19.149Z",
+  "gerado_em": "2026-11-07T18:09:09.287Z",
   "atividade": true,
   "projetos": [
     {
@@ -58,7 +58,7 @@
   "total_commits": 100,
   "texto": "Resumo de outubro 🚀\n\n📦 Projetos novos: projetoreact, snakit-cli, igor-portfolio, xp-portfolio, appreact, payments-analytics\n🔧 Mais ativos: snakit-cli (66 commits), projetoreact (8 commits), igor-portfolio (5 commits)\n🧰 Stacks do mês: JavaScript, CSS, HTML, Java\n📈 Total: 100 commits\n\ngithub.com/igordesouzabranco",
   "imagem": {
-    "arquivo": "cobra6.jpg",
-    "url": "https://raw.githubusercontent.com/igordesouzabranco/automescommits/main/imagens/cobras/cobra6.jpg"
+    "arquivo": "cobra11.jpg",
+    "url": "https://raw.githubusercontent.com/igordesouzabranco/automescommits/main/imagens/cobras/cobra11.jpg"
   }
 }
