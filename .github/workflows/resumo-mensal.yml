@@ -1,0 +1,45 @@
+name: Resumo mensal para o LinkedIn
+
+on:
+  schedule:
+    - cron: "0 12 1 * *" # dia 1 de cada mês, 12:00 UTC = 09:00 em Brasília
+  workflow_dispatch: # permite rodar manualmente na aba Actions
+    inputs:
+      aprendizado:
+        description: "O que mais aprendi (opcional, entra no post)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Só mostrar o texto, sem enviar ao Make"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write # necessário para commitar o JSON do resumo
+
+jobs:
+  resumo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Gerar e enviar resumo
+        run: node scripts/resumo-mensal.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USER: igordesouzabranco
+          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+          APRENDIZADO: ${{ inputs.aprendizado }}
+          DRY_RUN: ${{ inputs.dry_run }}
+
+      - name: Salvar resumo no repositório
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/resumos
+          git diff --cached --quiet || (git commit -m "chore: resumo mensal" && git push)
